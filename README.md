@@ -1,11 +1,14 @@
-#### Description:
-This playbook checks if the system is running the Bluefin distro, runs `bluefin-cli` interactively, copies and modifies the `bling.sh` script for Atuin, and updates `.bashrc` to point to the modified script. Finally, it triggers an `atuin import auto`.
+### Description:
+This playbook is useful if you don't want the up arrow functionality for Atuin in Bluefin CLI enabled, but you still want the extra bling provided by Bluefin. It modifies the configuration to only use the nice Atuin search with `Ctrl + R` while keeping the rest of the Bluefin bling setup.
 
-#### Quickstart:
+### Prerequisites:
+You must have already executed `bluefin-cli` and enabled it for this playbook to work properly.
 
-1. Run the playbook:
+### Quickstart:
+
+Run the playbook:
    ```bash
    ansible-playbook -i localhost bluefin_setup.yml
    ```
 
-This will guide you through running the `bluefin-cli` interactively and then modify the necessary files for Atuin's configuration.
+This will prompt you to confirm that `bluefin-cli` has been installed and then proceed to modify the Atuin configuration and `.bashrc` file as needed.
