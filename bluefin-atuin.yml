@@ -1,0 +1,49 @@
+---
+- hosts: localhost
+  gather_facts: yes
+  tasks:
+    - name: Check if the OS is Bluefin
+      ansible.builtin.shell: cat /etc/os-release
+      register: os_release
+
+    - name: Fail if not Bluefin
+      ansible.builtin.fail:
+        msg: "This playbook only works on Bluefin."
+      when: "'bluefin' not in os_release.stdout"
+
+    - name: Ask user if they have already installed bluefin-cli
+      pause:
+        prompt: "Have you already installed bluefin-cli? (y/n)"
+      register: user_input
+      
+    - name: Fail if user has not installed bluefin-cli
+      ansible.builtin.fail:
+        msg: "Please install bluefin-cli before running this playbook."
+      when: user_input.user_input == 'n'
+
+    - name: Copy bling.sh to user config
+      ansible.builtin.copy:
+        src: /usr/share/ublue-os/bluefin-cli/bling.sh
+        dest: ~/.config/bling.sh
+        mode: '0644'
+
+    - name: Add --disable-up-arrow to atuin init commands in bling.sh bash
+      ansible.builtin.replace:
+        path: ~/.config/bling.sh
+        regexp: 'atuin init bash\)'
+        replace: 'atuin init bash --disable-up-arrow)'
+
+    - name: Add --disable-up-arrow to atuin init commands in bling.sh zsh
+      ansible.builtin.replace:
+        path: ~/.config/bling.sh
+        regexp: 'atuin init zsh\)'
+        replace: 'atuin init zsh --disable-up-arrow)'
+
+    - name: Replace bling.sh path in .bashrc
+      ansible.builtin.replace:
+        path: ~/.bashrc
+        regexp: '/usr/share/ublue-os/bluefin-cli/bling.sh'
+        replace: '~/.config/bling.sh'
+
+    - name: Trigger atuin import auto
+      ansible.builtin.shell: atuin import auto
