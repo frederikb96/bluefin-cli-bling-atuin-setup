@@ -8,7 +8,7 @@ You must have already executed `bluefin-cli` and enabled it for this playbook to
 
 Run the playbook:
    ```bash
-   ansible-playbook -i localhost bluefin_setup.yml
+   ansible-playbook -i localhost bluefin-atuin.yml
    ```
 
 This will prompt you to confirm that `bluefin-cli` has been installed and then proceed to modify the Atuin configuration and `.bashrc` file as needed.
