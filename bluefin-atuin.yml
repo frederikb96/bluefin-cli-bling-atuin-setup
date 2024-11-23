@@ -44,6 +44,12 @@
         path: ~/.bashrc
         regexp: '/usr/share/ublue-os/bluefin-cli/bling.sh'
         replace: '~/.config/bling.sh'
+    
+    - name: Check size of Atuin history database
+      ansible.builtin.stat:
+        path: ~/.local/share/atuin/history.db
+      register: history_db
 
-    - name: Trigger atuin import auto
+    - name: Trigger atuin import auto if database size is less than 100 KB to prevent double import
       ansible.builtin.shell: atuin import auto
+      when: history_db.stat.size is defined and history_db.stat.size < 102400
