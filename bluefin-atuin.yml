@@ -23,7 +23,7 @@
 
     - name: Copy bling.sh to user config
       ansible.builtin.copy:
-        src: /usr/share/ublue-os/bluefin-cli/bling.sh
+        src: /usr/share/ublue-os/bling/bling.sh
         dest: ~/.config/bling.sh
         mode: '0644'
 
@@ -42,7 +42,7 @@
     - name: Replace bling.sh path in .bashrc
       ansible.builtin.replace:
         path: ~/.bashrc
-        regexp: '/usr/share/ublue-os/bluefin-cli/bling.sh'
+        regexp: '/usr/share/ublue-os/bling/bling.sh'
         replace: '~/.config/bling.sh'
     
     - name: Check size of Atuin history database
